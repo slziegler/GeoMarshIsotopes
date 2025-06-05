@@ -1,0 +1,69 @@
+Site,Source,Mean,SD,2.50%,97.50%
+Louisiana.Blue crab,Epiphytes,0.565,0.105,0.373,0.778
+Louisiana.Killifish,Epiphytes,0.416,0.091,0.239,0.586
+Louisiana.Red drum-Striped bass,Epiphytes,0.498,0.133,0.281,0.822
+Louisiana.Spotted seatrout,Epiphytes,0.464,0.238,0.082,0.919
+Louisiana.Blue crab,POM,0.185,0.069,0.052,0.317
+Louisiana.Killifish,POM,0.1,0.052,0.015,0.208
+Louisiana.Red drum-Striped bass,POM,0.384,0.106,0.109,0.552
+Louisiana.Spotted seatrout,POM,0.296,0.18,0.016,0.602
+Louisiana.Blue crab,Benthic algae,0.021,0.017,0.001,0.065
+Louisiana.Killifish,Benthic algae,0.045,0.038,0,0.133
+Louisiana.Red drum-Striped bass,Benthic algae,0.008,0.008,0,0.03
+Louisiana.Spotted seatrout,Benthic algae,0.024,0.03,0,0.112
+Louisiana.Blue crab,Saltmarsh veg,0.229,0.06,0.108,0.337
+Louisiana.Killifish,Saltmarsh veg,0.439,0.049,0.337,0.524
+Louisiana.Red drum-Striped bass,Saltmarsh veg,0.109,0.058,0.016,0.229
+Louisiana.Spotted seatrout,Saltmarsh veg,0.216,0.113,0.022,0.419
+North Carolina.Blue crab,Epiphytes,0.222,0.078,0.087,0.392
+North Carolina.Killifish,Epiphytes,0.128,0.085,0.017,0.336
+North Carolina.Red drum-Striped bass,Epiphytes,0.252,0.097,0.08,0.475
+North Carolina.Flounder,Epiphytes,0.139,0.109,0.015,0.433
+North Carolina.Spotted seatrout,Epiphytes,0.709,0.115,0.475,0.913
+North Carolina.Blue crab,POM,0.465,0.045,0.367,0.545
+North Carolina.Killifish,POM,0.544,0.051,0.432,0.633
+North Carolina.Red drum-Striped bass,POM,0.376,0.054,0.26,0.474
+North Carolina.Flounder,POM,0.505,0.067,0.344,0.61
+North Carolina.Spotted seatrout,POM,0.165,0.08,0.031,0.325
+North Carolina.Blue crab,Benthic algae,0.042,0.034,0.002,0.128
+North Carolina.Killifish,Benthic algae,0.037,0.042,0.001,0.143
+North Carolina.Red drum-Striped bass,Benthic algae,0.041,0.043,0.001,0.155
+North Carolina.Flounder,Benthic algae,0.054,0.067,0.001,0.232
+North Carolina.Spotted seatrout,Benthic algae,0.031,0.038,0.001,0.136
+North Carolina.Blue crab,Saltmarsh veg,0.271,0.074,0.121,0.413
+North Carolina.Killifish,Saltmarsh veg,0.29,0.081,0.109,0.428
+North Carolina.Red drum-Striped bass,Saltmarsh veg,0.332,0.093,0.136,0.504
+North Carolina.Flounder,Saltmarsh veg,0.302,0.097,0.08,0.453
+North Carolina.Spotted seatrout,Saltmarsh veg,0.095,0.067,0.011,0.263
+New Jersey.Blue crab,Epiphytes,0.097,0.092,0.002,0.324
+New Jersey.Killifish,Epiphytes,0.007,0.008,0,0.028
+New Jersey.Red drum-Striped bass,Epiphytes,0.074,0.086,0.001,0.322
+New Jersey.Flounder,Epiphytes,0.157,0.139,0.001,0.433
+New Jersey.Blue crab,POM,0.538,0.062,0.391,0.632
+New Jersey.Killifish,POM,0.017,0.01,0.003,0.041
+New Jersey.Red drum-Striped bass,POM,0.662,0.059,0.52,0.756
+New Jersey.Flounder,POM,0.698,0.091,0.509,0.845
+New Jersey.Blue crab,Benthic algae,0.041,0.039,0,0.146
+New Jersey.Killifish,Benthic algae,0.005,0.005,0,0.019
+New Jersey.Red drum-Striped bass,Benthic algae,0.027,0.029,0,0.103
+New Jersey.Flounder,Benthic algae,0.061,0.065,0,0.213
+New Jersey.Blue crab,Saltmarsh veg,0.324,0.043,0.23,0.399
+New Jersey.Killifish,Saltmarsh veg,0.971,0.013,0.941,0.991
+New Jersey.Red drum-Striped bass,Saltmarsh veg,0.238,0.048,0.128,0.317
+New Jersey.Flounder,Saltmarsh veg,0.084,0.044,0.017,0.183
+Massachusetts.Blue crab,Epiphytes,0.07,0.072,0.002,0.262
+Massachusetts.Flounder,Epiphytes,0.054,0.083,0.001,0.319
+Massachusetts.Killifish,Epiphytes,0.089,0.112,0.001,0.411
+Massachusetts.Red drum-Striped bass,Epiphytes,0.047,0.075,0,0.271
+Massachusetts.Blue crab,POM,0.362,0.147,0.112,0.709
+Massachusetts.Flounder,POM,0.628,0.231,0.058,0.947
+Massachusetts.Killifish,POM,0.482,0.198,0.062,0.81
+Massachusetts.Red drum-Striped bass,POM,0.705,0.214,0.108,0.958
+Massachusetts.Blue crab,Benthic algae,0.04,0.043,0.001,0.16
+Massachusetts.Flounder,Benthic algae,0.023,0.034,0,0.114
+Massachusetts.Killifish,Benthic algae,0.043,0.055,0,0.194
+Massachusetts.Red drum-Striped bass,Benthic algae,0.02,0.028,0,0.094
+Massachusetts.Blue crab,Saltmarsh veg,0.529,0.146,0.161,0.771
+Massachusetts.Flounder,Saltmarsh veg,0.295,0.192,0.029,0.807
+Massachusetts.Killifish,Saltmarsh veg,0.385,0.174,0.093,0.796
+Massachusetts.Red drum-Striped bass,Saltmarsh veg,0.228,0.176,0.019,0.734

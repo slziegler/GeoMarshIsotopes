@@ -1,0 +1,652 @@
+
+---
+  title: "Regional Comparison MixSIAR v2"
+author: "Shelby Ziegler"
+date: "2022-01-12"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+  
+MixSIAR models
+
+```{r}
+#Open MixSIAR library 
+library(MixSIAR)
+library(tidyverse)
+library(cowplot)
+
+#setwd("/Users/SLZiegler/Desktop/Git Hub/Ziegler_MixSIAR_Regional/")
+```
+
+North Carolina 
+
+
+```{r}
+set.seed(22)
+mix1 <- load_mix_data(filename="Data/NC/NC_consumer.csv",
+                      iso_names=c("d13C", "d34S"),
+                      factors="Group",
+                      fac_random=FALSE,
+                      fac_nested=FALSE,
+                      cont_effects=NULL)
+
+source1 <- load_source_data(filename="Data/NC/4_sources_NC.csv",
+                            source_factors = NULL,
+                            conc_dep=F, 
+                            data_type="means", 
+                            mix1)
+
+discr1 <- load_discr_data(filename="Data/NC/4fish_discriminationNC.csv", mix1)
+
+plot_data(filename="Data/NC/isospace_plot_NC1",
+          plot_save_pdf=T,
+          plot_save_png=F,
+          mix1,source1,discr1)
+
+
+# Define model structure and write JAGS model file
+model_filename <- "Data/NC/MixSIAR_model.txt"
+resid_err <- FALSE
+process_err <- TRUE
+write_JAGS_model(model_filename, resid_err, process_err, mix1, source1)
+
+# Run the JAGS model ("test" first, then "short")
+#jagsNC.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+jagsNC1 <- run_model(run="long", mix1, source1, discr1, model_filename, alpha.prior=1, resid_err, process_err)
+
+# Process diagnostics, summary stats, and posterior plots
+#output_JAGS(jagsNC.1, mix, source)
+
+output_options = list(summary_save = TRUE,
+                      summary_name = "Data/NC/NC_summary_statistics1",
+                      sup_post = T,
+                      plot_post_save_pdf = F,
+                      plot_post_name = "Data/NC/NC_posterior_density1",
+                      sup_pairs = T,
+                      plot_pairs_save_pdf = F,
+                      plot_pairs_name = "Data/NC/NC_pairs_plot1",
+                      sup_xy = TRUE,
+                      plot_xy_save_pdf = FALSE,
+                      plot_xy_name = "Data/NC/NC_xy_plot1",
+                      gelman = TRUE,
+                      heidel = FALSE,
+                      geweke = TRUE,
+                      diag_save = T,
+                      diag_name = "Data/NC/NC_diagnostics",
+                      indiv_effect = FALSE,
+                      plot_post_save_png = FALSE,
+                      plot_pairs_save_png = FALSE,
+                      plot_xy_save_png = FALSE,
+                      diag_save_ggmcmc = FALSE)
+# display outputs
+output_JAGS(jagsNC1, mix1, source1, output_options)
+
+
+```
+
+All Species NJ 
+
+```{r}
+mixNJ1 <- load_mix_data(filename="Data/NJ/NJ_consumer.csv",
+                     iso_names=c("d13C","d34S"),
+                     factors="Group",
+                     fac_random=FALSE,
+                     fac_nested=FALSE,
+                     cont_effects=NULL)
+
+sourceNJ1 <- load_source_data(filename="Data/NJ/4_sources_NJ.csv",
+                            source_factors = NULL,
+                            conc_dep=FALSE, 
+                            data_type="means", 
+                            mixNJ1)
+
+discrNJ1 <- load_discr_data(filename="Data/NJ/4fish_discriminationNJ.csv", mixNJ1)
+
+plot_data(filename="Data/NJ/NJisospace_plot_1",
+          plot_save_pdf=TRUE,
+          plot_save_png=FALSE,
+          mixNJ1,sourceNJ1,discrNJ1)
+
+
+# Plot your prior
+plot_prior(alpha.prior=1,sourceNJ1)
+
+# Define model structure and write JAGS model file
+model_filename <- "Data/NJ/MixSIAR_model.txt"
+resid_err <- FALSE
+process_err <- TRUE
+write_JAGS_model(model_filename, resid_err, process_err, mixNJ1, sourceNJ1)
+
+# Run the JAGS model ("test" first, then "short")
+#jagsNJ.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+jagsNJ1 <- run_model(run="long", mixNJ1, sourceNJ1, discrNJ1, model_filename, alpha.prior=1, resid_err, process_err)
+
+output_options = list(summary_save = TRUE,
+                      summary_name = "Data/NJ/NJ_summary_statistics",
+                      sup_post = T,
+                      plot_post_save_pdf = T,
+                      plot_post_name = "Data/NJ/NJ_posterior_density",
+                      sup_pairs = T,
+                      plot_pairs_save_pdf = F,
+                      plot_pairs_name = "Data/NJ/NJ_pairs_plot",
+                      sup_xy = TRUE,
+                      plot_xy_save_pdf = FALSE,
+                      plot_xy_name = "Data/NJ/NJ_xy_plot",
+                      gelman = TRUE,
+                      heidel = FALSE,
+                      geweke = TRUE,
+                      diag_save = T,
+                      diag_name = "Data/NJ/NJ_diagnostics",
+                      indiv_effect = FALSE,
+                      plot_post_save_png = FALSE,
+                      plot_pairs_save_png = FALSE,
+                      plot_xy_save_png = FALSE,
+                      diag_save_ggmcmc = FALSE)
+# Process diagnostics, summary stats, and posterior plots
+#output_JAGS(jagsNJ.1, mix, source)
+output_JAGS(jagsNJ1, mixNJ1, sourceNJ1, output_options)
+
+```
+
+All species LA 
+
+```{r}
+## Benthic Primary Consumers Mix
+
+mixla <- load_mix_data(filename="Data/LA/LA_consumer.csv",
+                     iso_names=c("d13C", "d34S"),
+                     factors="Group",
+                     fac_random=FALSE,
+                     fac_nested=FALSE,
+                     cont_effects=NULL)
+
+sourcela <- load_source_data(filename="Data/LA/4sources_LA.csv",
+                           source_factors = NULL,
+                           conc_dep=FALSE, 
+                           data_type="means", 
+                           mixla)
+
+discrla <- load_discr_data(filename="Data/LA/4fish_discriminationLA.csv", mixla)
+
+plot_data(filename="Data/LA/LA-isospace_plot",
+          plot_save_pdf=TRUE,
+          plot_save_png=FALSE,
+          mixla,sourcela,discrla)
+
+
+# Plot your prior
+plot_prior(alpha.prior=1,sourcela)
+
+# Define model structure and write JAGS model file
+model_filename <- "Data/LA/MixSIAR_model.txt"
+resid_err <- FALSE
+process_err <- TRUE
+write_JAGS_model(model_filename, resid_err, process_err, mixla, sourcela)
+
+# Run the JAGS model ("test" first, then "short")
+#jagsLA.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+jagsLA1 <- run_model(run="long", mixla, sourcela, discrla, model_filename, alpha.prior=1, resid_err, process_err)
+
+output_options = list(summary_save = TRUE,
+                      summary_name = "Data/LA/LA_summary_statistics",
+                      sup_post = T,
+                      plot_post_save_pdf = F,
+                      plot_post_name = "Data/LA/LA_posterior_density",
+                      sup_pairs = T,
+                      plot_pairs_save_pdf = F,
+                      plot_pairs_name = "Data/LA/LA_pairs_plot",
+                      sup_xy = TRUE,
+                      plot_xy_save_pdf = FALSE,
+                      plot_xy_name = "Data/LA/LA_xy_plot",
+                      gelman = TRUE,
+                      heidel = FALSE,
+                      geweke = TRUE,
+                      diag_save = T,
+                      diag_name = "Data/LA/LA_diagnostics",
+                      indiv_effect = FALSE,
+                      plot_post_save_png = FALSE,
+                      plot_pairs_save_png = FALSE,
+                      plot_xy_save_png = FALSE,
+                      diag_save_ggmcmc = FALSE)
+# Process diagnostics, summary stats, and posterior plots
+#output_JAGS(jagsLA.1, mix, source)
+output_JAGS(jagsLA1, mixla, sourcela, output_options)
+
+```
+
+All species MA 
+
+```{r}
+## Benthic Primary Consumers Mix
+
+mixma <- load_mix_data(filename="Data/MA/MA_consumer_means.csv",
+                     iso_names=c("d13C","d34S"),
+                     factors="Group",
+                     fac_random=FALSE,
+                     fac_nested=FALSE,
+                     cont_effects=NULL)
+
+sourcema <- load_source_data(filename="Data/MA/4_sources_MA.csv",
+                           source_factors = NULL,
+                           conc_dep=FALSE, 
+                           data_type="means", 
+                           mixma)
+
+discrma <- load_discr_data(filename="Data/MA/4fish_discriminationMA.csv", mixma)
+
+plot_data(filename="Data/MA/MA-isospace_plot",
+          plot_save_pdf=TRUE,
+          plot_save_png=FALSE,
+          mixma,sourcema,discrma)
+
+
+# Plot your prior
+plot_prior(alpha.prior=1,sourcema)
+
+# Define model structure and write JAGS model file
+model_filename <- "Data/MA/MixSIAR_model.txt"
+resid_err <- FALSE
+process_err <- TRUE
+write_JAGS_model(model_filename, resid_err, process_err, mixma, sourcema)
+
+# Run the JAGS model ("test" first, then "short")
+#jagsLA.1 <- run_model(run="test", mix, source, discr, model_filename, alpha.prior=1, resid_err, process_err)
+jagsMA1 <- run_model(run="long", mixma, sourcema, discrma, model_filename, alpha.prior=1, resid_err, process_err)
+
+output_options = list(summary_save = TRUE,
+                      summary_name = "Data/MA/MA_summary_statistics",
+                      sup_post = T ,
+                      plot_post_save_pdf = F,
+                      plot_post_name = "Data/MA/MA_posterior_density",
+                      sup_pairs = T,
+                      plot_pairs_save_pdf = F,
+                      plot_pairs_name = "Data/MA/MA_pairs_plot",
+                      sup_xy = TRUE,
+                      plot_xy_save_pdf = FALSE,
+                      plot_xy_name = "Data/MA/MA_xy_plot",
+                      gelman = TRUE,
+                      heidel = FALSE,
+                      geweke = TRUE,
+                      diag_save = T,
+                      diag_name = "Data/MA/MA_diagnostics",
+                      indiv_effect = FALSE,
+                      plot_post_save_png = FALSE,
+                      plot_pairs_save_png = FALSE,
+                      plot_xy_save_png = FALSE,
+                      diag_save_ggmcmc = FALSE)
+# Process diagnostics, summary stats, and posterior plots
+#output_JAGS(jagsLA.1, mix, source)
+output_JAGS(jagsMA1, mixma, sourcema, output_options)
+
+```
+
+Plot sources
+
+```{r}
+theme_set(theme_classic())
+#sources<-read.csv("Data/All Sites/SummaryStats-AllSites-2024run.csv")
+sources<-read.csv("Data/SummaryStats-AllSites-2024runNoBF.csv")
+sources$Source<-factor(sources$Source, levels=c("POM","Epiphytes","Benthic algae","Saltmarsh veg"))
+sources$Location<-factor(sources$Location, levels=c("Louisiana", "North Carolina", "New Jersey", "Massachusetts"))
+sources$Consumer<-factor(sources$Consumer, levels=c("Killifish", "Blue crab","Spotted seatrout", "Flounder", "Red drum-Striped bass"))
+
+   
+sources<-sources%>%
+  mutate(Source = recode(Source, `Saltmarsh veg`  = "C4 saltmarsh vegetation",
+                         `Benthic algae` = "Saltmarsh MPB"))
+
+
+ggplot(sources, aes(x=Location, y=Mean, fill=Source))+
+  geom_bar(stat="identity", color="black")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  facet_wrap(~Consumer, ncol=5)+
+  scale_fill_manual(values=c("#018571","#80cdc1", "#dfc27d", "#a6611a"))+
+  theme(panel.border = element_rect(colour = "black", fill=NA, size=1))+
+  ylab("% Source contribution")+
+   theme_bw(base_size=20)+
+  theme(axis.text.x=element_text(angle=45,hjust=1))
+ 
+
+
+
+
+```
+
+
+To construct boxplots bootstrap data from mean, sd, 2.5%, 97.5% values from mixing models into 100 random individuals from each species, flow regime and season.
+
+```{r}
+library(truncnorm)
+#comb<-read.csv("Data/All Sites/SummaryStats-AllSites-2024run2.csv")
+comb<-read.csv("Data/SummaryStats-AllSites-2024run2NoBF.csv")
+#eco is name of data frame, n = number of samples you want. species (all variable separate later) source, mean, sd, 2.5, 97.5 
+HVvalues = function(eco,n){
+  set.seed(14)
+  df_tot = data.frame(Species = character(0),
+                      Source = character(0), Vals = integer(0))
+  for (i in 1:nrow(eco)){
+    Vals = truncnorm::rtruncnorm(n, eco[i,5], eco[i,6], eco[i,3], eco[i,4])
+    #Vals = rnorm(n, eco[i,4], eco[i,5])
+    Species = list(rep(eco[i,1],n))
+    Source = list(rep(eco[i,2],n))
+    num = list(seq(1, n, 1))
+    df = as.data.frame(c(Species = Species, num = num,
+                         Source = Source, as.data.frame(Vals)))
+    df_tot = rbind(df_tot, df)
+  }
+  df_com = tidyr::spread(df_tot, 'Source', 'Vals')
+  ####### part below - divides all source contributions by sum of all source conts so that it = 1
+  set<-df_com[3:ncol(df_com)]
+  set$sum<-rowSums(set)
+  cols<-seq(3,ncol(df_com))
+  for (i in 1:nrow(df_com)){
+    for(j in 1:length(cols)){
+      df_com[i,cols[j]]<-df_com[i,cols[j]]/set[i,ncol(set)] #change value here to 1 + number of sources for your data
+    }}
+  df_com$sum<-rowSums(df_com[3:ncol(df_com)])
+  return(df_com)
+}
+
+
+comb100<-HVvalues(comb, 100)
+
+comb100X<-comb100 %>% separate(Species,into=c('Site', 'Species'), sep="\\.")%>%
+  select(Site, Species, `Epiphytes`, `POM`,  `Benthic algae`, `Saltmarsh veg`)%>%
+  gather(Source, Contr, -Species, -Site)
+#write.csv(comb100X, "comb100.csv")
+#Plot
+comb100X$Site<-factor(comb100X$Site, levels=c("Louisiana", "North Carolina", "New Jersey", "Massachusetts"))
+comb100X$Species<-factor(comb100X$Species, levels=c( "Red drum-Striped bass", "Flounder", "Spotted seatrout","Blue crab", "Killifish"))
+comb100X$Source<-factor(comb100X$Source, levels=c("POM","Epiphytes","Benthic algae","Saltmarsh veg"))
+
+comb100X<-comb100X%>%
+  mutate(Source = recode(Source, `Saltmarsh veg`  = "C4 saltmarsh vegetation",
+                         `Benthic algae` = "Saltmarsh MPB"))
+
+
+
+ggplot(comb100X, aes(x=Site, y=Contr))+
+  geom_boxplot(aes(fill=Source))+
+  scale_fill_manual(values=c("#018571","#80cdc1", "#dfc27d", "#a6611a"))+
+  facet_grid(Species~Source)+
+  theme_bw(base_size = 18)+ 
+  labs(y="% Source contribution")+
+  theme(axis.text.x = element_text(angle = 90, hjust=1))+
+  theme(legend.position = "none")
+  
+
+```
+
+
+Trophic level calculations
+
+
+```{r}
+
+#Louisiana
+
+LAk<-comb100%>%dplyr::filter(Species=="Louisiana.Killifish")
+
+LAk$TL <- ((8.27-((LAk$`Benthic algae`*2.83)+(LAk$`POM`*4.4)+(LAk$`Saltmarsh veg`*2.86)+(LAk$`Epiphytes`*5.4)))/3.3)+1
+
+LAbc<-comb100%>%dplyr::filter(Species=="Louisiana.Blue crab")
+LAbc$TL <- ((7.49-((LAbc$`Benthic algae`*2.83)+(LAbc$`POM`*4.4)+(LAbc$`Saltmarsh veg`*2.86)+(LAbc$`Epiphytes`*5.4)))/3.3)+1
+
+LArd<-comb100%>%dplyr::filter(Species=="Louisiana.Red drum")
+LArd$TL <- ((11.55-((LArd$`Benthic algae`*2.83)+(LArd$`POM`*4.4)+(LArd$`Saltmarsh veg`*2.86)+(LArd$`Epiphytes`*5.4)))/3.3)+1
+
+LAst<-comb100%>%dplyr::filter(Species=="Louisiana.Spotted seatrout")
+LAst$TL <- ((15.73-((LAst$`Benthic algae`*2.83)+(LAst$`POM`*4.4)+(LAst$`Saltmarsh veg`*2.86)+(LAst$`Epiphytes`*5.4)))/3.3)+1
+
+LATL<-rbind(LAk, LAbc, LArd, LAst)%>%
+  separate(Species,into=c('Site', 'Species'), sep="\\.")
+
+
+#North Carolina
+
+NCk<-comb100%>%dp lyr::filter(Species=="North Carolina.Killifish")
+NCk$TL <- ((9-((NCk$`Benthic algae`*3.37)+(NCk$`POM`*1.91)+(NCk$`Saltmarsh veg`*3.65)+(NCk$`Epiphytes`*4.11)))/3.3)+1
+
+NCbc<-comb100%>%dplyr::filter(Species=="North Carolina.Blue crab")
+NCbc$TL <- ((8.87-((NCbc$`Benthic algae`*3.37)+(NCbc$`POM`*1.91)+(NCbc$`Saltmarsh veg`*3.65)+(NCbc$`Epiphytes`*4.11)))/3.3)+1
+
+NCrd<-comb100%>%dplyr::filter(Species=="North Carolina.Red drum")
+NCrd$TL <- ((10.46-((NCrd$`Benthic algae`*3.37)+(NCrd$`POM`*1.91)+(NCrd$`Saltmarsh veg`*3.65)+(NCrd$`Epiphytes`*4.11)))/3.3)+1
+
+NCfl<-comb100%>%dplyr::filter(Species=="North Carolina.Flounder")
+NCfl$TL <- ((11.34-((NCfl$`Benthic algae`*3.37)+(NCfl$`POM`*1.91)+(NCfl$`Saltmarsh veg`*3.65)+(NCfl$`Epiphytes`*4.11)))/3.3)+1
+
+NCbf<-comb100%>%dplyr::filter(Species=="North Carolina.Bluefish")
+NCbf$TL <- ((13.6-((NCbf$`Benthic algae`*3.37)+(NCbf$`POM`*1.91)+(NCbf$`Saltmarsh veg`*3.65)+(NCbf$`Epiphytes`*4.11)))/3.3)+1
+
+NCst<-comb100%>%dplyr::filter(Species=="North Carolina.Spotted seatrout")
+NCst$TL <- ((10.21-((NCst$`Benthic algae`*3.37)+(NCst$`POM`*1.91)+(NCst$`Saltmarsh veg`*3.65)+(NCst$`Epiphytes`*4.11)))/3.3)+1
+
+NCTL<-rbind(NCk, NCbc, NCrd, NCfl, NCbf, NCst)%>%
+  separate(Species,into=c('Site', 'Species'), sep="\\.")
+
+#New Jersey 
+
+NJk<-comb100%>%dplyr::filter(Species=="New Jersey.Killifish")
+NJk$TL <- ((7.18-((NJk$`Benthic algae`*5.54)+(NJk$`POM`*5.84)+(NJk$`Saltmarsh veg`*4.53)+(NJk$`Epiphytes`*5.4)))/3.3)+1
+
+NJbc<-comb100%>%dplyr::filter(Species=="New Jersey.Blue crab")
+NJbc$TL <- ((10.26-((NJbc$`Benthic algae`*5.54)+(NJbc$`POM`*5.84)+(NJbc$`Saltmarsh veg`*4.53)+(NJbc$`Epiphytes`*5.4)))/3.3)+1
+
+NJsb<-comb100%>%dplyr::filter(Species=="New Jersey.Striped bass")
+NJsb$TL <- ((14.56-((NJsb$`Benthic algae`*5.54)+(NJsb$`POM`*5.84)+(NJsb$`Saltmarsh veg`*4.53)+(NJsb$`Epiphytes`*5.4)))/3.3)+1
+
+NJfl<-comb100%>%dplyr::filter(Species=="New Jersey.Flounder")
+NJfl$TL <- ((12.14-((NJfl$`Benthic algae`*5.54)+(NJfl$`POM`*5.84)+(NJfl$`Saltmarsh veg`*4.53)+(NJfl$`Epiphytes`*5.4)))/3.3)+1
+
+NJbf<-comb100%>%dplyr::filter(Species=="New Jersey.Bluefish")
+NJbf$TL <- ((15.35-((NJbf$`Benthic algae`*5.54)+(NJbf$`POM`*5.84)+(NJbf$`Saltmarsh veg`*4.53)+(NJbf$`Epiphytes`*5.4)))/3.3)+1
+
+NJTL<-rbind(NJk, NJbc, NJsb, NJfl, NJbf)%>%
+  separate(Species,into=c('Site', 'Species'), sep="\\.")
+
+#Massachusetts
+MAk<-comb100%>%dplyr::filter(Species=="Massachusetts.Killifish")
+MAk$TL <- ((9.0-((MAk$`Benthic algae`*5.4)+(MAk$`POM`*4.5)+(MAk$`Saltmarsh veg`*3.4)+(MAk$`Epiphytes`*6.1)))/3.3)+1
+
+MAbc<-comb100%>%dplyr::filter(Species=="Massachusetts.Blue crab")
+MAbc$TL <- ((6.5-((MAbc$`Benthic algae`*5.4)+(MAbc$`POM`*4.5)+(MAbc$`Saltmarsh veg`*3.4)+(MAbc$`Epiphytes`*6.1)))/3.3)+1
+
+MAsb<-comb100%>%dplyr::filter(Species=="Massachusetts.Striped bass")
+MAsb$TL <- ((15.1-((MAsb$`Benthic algae`*5.4)+(MAsb$`POM`*4.5)+(MAsb$`Saltmarsh veg`*3.4)+(MAsb$`Epiphytes`*6.1)))/3.3)+1
+
+MAfl<-comb100%>%dplyr::filter(Species=="Massachusetts.Flounder")
+MAfl$TL <- ((10.8-((MAfl$`Benthic algae`*5.4)+(MAfl$`POM`*4.5)+(MAfl$`Saltmarsh veg`*3.4)+(MAfl$`Epiphytes`*6.1)))/3.3)+1
+
+MATL<-rbind(MAk, MAbc, MAsb, MAfl)%>%
+  separate(Species,into=c('Site', 'Species'), sep="\\.")
+  
+allTL<-rbind(LATL, NCTL, NJTL, MATL)
+```
+
+Plot trophic levels - run stats
+
+```{r}
+allTL$Site<-factor(allTL$Site, levels=c("Louisiana", "North Carolina", "New Jersey", "Massachusetts"))
+allTL$Species<-factor(allTL$Species, levels=c("Killifish", "Blue crab", "Red drum", "Flounder", "Spotted seatrout", "Bluefish", "Striped bass"))
+
+ggplot(allTL, aes(x=Species, y=TL))+
+  geom_boxplot(aes(fill=Site))+
+ # scale_fill_manual(values=c("#de77ae","#4575b4"))+
+  theme_bw(base_size=16)+ 
+  labs(y="Trophic level")+
+  theme(axis.text.x = element_text(angle = 90, hjust=1))
+
+allTL$marsh<-allTL$`Benthic algae`+allTL$`Saltmarsh veg`
+allTLmean<-allTL%>%
+  group_by(Species, Site)%>%
+  summarise(mTL=mean(TL), sdTL=sd(TL), marshcont=mean(marsh))
+
+allTLmean$marshprod<-((10^allTLmean$mTL)*allTLmean$marshcont)
+
+ggplot(allTLmean, aes(x=mTL, y=log(marshprod), fill=Site))+
+  geom_point(shape=21,, size = 3)+
+  geom_smooth(method="lm", se=F, aes(color=Site))+
+  scale_fill_viridis_d(option="mako", " ")+
+    scale_color_viridis_d(option="mako", " ")+
+  ylab("Ln(relative marsh production per consumer)")+
+  xlab("Trophic position")+
+  theme_bw(base_size = 18)
+
+
+
+car::Anova(lm(log(marshprod) ~ mTL*Site, data=allTLmean))
+
+summary(lm(log(marshprod) ~ mTL*Site, data=allTLmean))
+
+Nctl<-allTLmean%>%
+  filter(Site=="North Carolina")
+summary(lm(log(marshprod) ~ mTL, data=Nctl))
+
+Latl<-allTLmean%>%
+  filter(Site=="Louisiana")
+summary(lm(log(marshprod) ~ mTL, data=Latl))
+
+Njtl<-allTLmean%>%
+  filter(Site=="New Jersey")
+summary(lm(log(marshprod) ~ mTL, data=Njtl))
+
+Matl<-allTLmean%>%
+  filter(Site=="Massachusetts")
+summary(lm(log(marshprod) ~ mTL, data=Matl))
+
+kruskal.test(TL~Site, data=allTL)+
+rstatix::dunn_test(TL~Site, data=allTL, p.adjust.method ="bonferroni")
+
+kruskal.test(TL~Species, data=allTL)
+rstatix::dunn_test(TL~Species, data=allTL, p.adjust.method ="bonferroni")
+
+
+
+```
+
+Map
+
+```{r}
+# Load necessary libraries
+library( sf)
+library(ggspatial)
+library(maps)
+library(patchwork) #for insets
+library(tigris)
+
+# Create a data frame with the coordinates of the locations
+locations <- data.frame(
+  name = c("Louisiana", "North Carolina", "New Jersey", "Massachusetts"),
+  lon = c(-89.9125, -76.6690, -74.2932, -70.8100),
+  lat = c(29.2500, 34.7183, 39.5350, 42.6817)
+)
+
+locations$name<-factor(locations$name, levels=c("Louisiana", "North Carolina", "New Jersey", "Massachusetts"))
+# Load a map of the Eastern US using `maps` package
+us <- map_data("state")
+
+# Filter map data to get the eastern US (east of the Mississippi River)
+eastern_us <- us %>%
+  filter(long > -92.5)
+
+
+# Plot the map with ggplot2
+base_map<-ggplot() +
+  geom_polygon(data = eastern_us, aes(x = long, y = lat, group = group), fill = "gray", color = "gray") +
+  geom_point(data = locations, aes(x = lon, y = lat, fill=name),shape=21, size = 4) +
+     scale_fill_viridis_d(option="mako", " ")+
+  geom_text(data = locations, aes(x = lon, y = lat, label = name), vjust = -1, hjust = 0.5, color = "black") +
+  theme_minimal() +
+    # Add North Arrow
+  annotation_north_arrow(location = "br", style = ggspatial::north_arrow_fancy_orienteering(
+  line_width = 1,
+  line_col = "black",
+  fill = c("black", "black"),
+  text_col = "black",
+  text_family = "",
+  text_face = NULL,
+  text_size = 10,
+  text_angle = 0)) +
+  labs(x = "Longitude", y = "Latitude") +
+  theme(legend.position="none")+
+  theme(panel.border = element_rect(colour = "black", fill=NA, linewidth=1))+
+  coord_cartesian(xlim=c(-90.8, -65)) 
+base_map
+  
+
+library(sf)
+sf_use_s2(FALSE)
+
+#NC
+geo.box <- c(xmin = -77.0, xmax = -76.45, ymin = 34.55, ymax = 34.8)
+gshhg.l1 <- sf::read_sf("Data/gshhg-shp-2.3.7/GSHHS_shp/f/GSHHS_f_L1.shp")%>% st_crop(geo.box)
+
+
+ncp<-ggplot2::ggplot() +
+   geom_sf(data = gshhg.l1)+ annotation_scale()+theme_void()+theme(panel.border = element_rect(colour = "black", fill=NA, linewidth=1), panel.background = element_rect(fill ="white"))
+  
+
+base_map
+ 
+
+#LA
+geo.box2 <- c(xmin = -89.93, xmax = -89.7, ymin = 29.38, ymax = 29.5)
+gshhg.la <- sf::read_sf("Data/gshhg-shp-2.3.7/GSHHS_shp/f/GSHHS_f_L1.shp")%>% st_crop(geo.box2)
+
+lap<-ggplot2::ggplot() +
+   geom_sf(data = gshhg.la)+ annotation_scale()+theme_void()+theme(panel.border = element_rect(colour = "black", fill=NA, linewidth=1), panel.background = element_rect(fill ="white"))
+  
+
+#NJ
+geo.box3 <- c(xmin = -74.43, xmax = -74.05, ymin = 39.35, ymax = 39.78)
+gshhg.nj <- sf::read_sf("Data/gshhg-shp-2.3.7/GSHHS_shp/f/GSHHS_f_L1.shp")%>% st_crop(geo.box3)
+
+njp<-ggplot2::ggplot() +
+   geom_sf(data = gshhg.nj)+annotation_scale()+theme_void()+theme(panel.border = element_rect(colour = "black", fill=NA, linewidth=1), panel.background = element_rect(fill ="white"))
+  
+ 
+
+
+#MA
+geo.box4 <- c(xmin = -70.9, xmax = -70.75, ymin = 42.66, ymax = 42.86)
+gshhg.ma <- sf::read_sf("Data/gshhg-shp-2.3.7/GSHHS_shp/f/GSHHS_f_L1.shp")%>% st_crop(geo.box4)
+
+maP<-ggplot2::ggplot() +
+   geom_sf(data = gshhg.ma)+annotation_scale()+theme_void()+theme(panel.border = element_rect(colour = "black", fill=NA, linewidth=1), panel.background = element_rect(fill ="white"))
+  
+  
+  
+#  theme_minimal() +
+#  annotation_scale()+
+#  labs(x = "Longitude", y = "Latitude") +
+#  theme(legend.position="none")+
+#  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), , panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
+
+library(cowplot)
+
+ggdraw() +
+  draw_plot(base_map) +
+  draw_plot(ncp,
+    height = 0.18,
+    x = 0.07,
+    y = 0.23
+  )+
+  draw_plot(lap,
+    height = 0.18,
+    x = -0.24,
+    y = 0.07
+  )+
+  draw_plot(njp,
+    height = 0.3,
+    x = 0.28,
+    y = 0.35
+  )+
+  draw_plot(maP,
+    height = 0.3,
+    x = 0.4,
+    y = 0.67
+  )
+  
+```
