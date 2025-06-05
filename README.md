@@ -14,8 +14,26 @@
    - R markdown script with all code and analyses included in manuscript (GeoIsotopesV2.Rmd)
    
 2. Data
-  
-3. Figures and Tables
+   - LA
+      - 4fish_discriminationLA.csv
+      - 4sources_LA.csv
+      - LA_consumer.csv
+   - MA
+      - 4fish_discriminationMA.csv
+      - 4sources_MA.csv
+      - MA_consumer_means.csv
+   - NC
+      - 4fish_discriminationNC.csv
+      - 4sources_NC.csv
+      - NC_consumer.csv
+   - NJ
+      - 4fish_discriminationNJ.csv
+      - 4sources_NJ.csv
+      - NJ_consumer.csv
+   - SummaryStats-AllSites-2024run2NoBF.csv
+   - SummaryStats-AllSites-2024runNoBF.csv
+     
+4. Figures and Tables
    - Figure 1.pdf
    - Figure 2.pdf
    - Figure 3.pdf
@@ -23,5 +41,5 @@
    - Table 2.pdf
    - Table 3.pdf
 
-4. Supplemental Material
+5. Supplemental Material
    - GeoMarshFish-Supplemental.pdf
